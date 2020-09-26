@@ -27,15 +27,16 @@ describe("logMessage function", () => {
 });
 
 describe("replaceUserIds function", () => {
-    const mockedUserId = "12345";
-    const mockedLog = `Hello <@!${mockedUserId}>`;
+    const mockedUserIds = ["12345", "56789"];
     const mockedMessageObj = {
         client: {
             users: {
                 cache: {
                     get(id) {
-                        if (id === mockedUserId) {
+                        if (id === mockedUserIds[0]) {
                             return { username: "Guybrush" };
+                        } else if (id === mockedUserIds[1]) {
+                            return { username: "Elaine" };
                         } else {
                             return "";
                         }
@@ -45,8 +46,15 @@ describe("replaceUserIds function", () => {
         },
     };
 
-    it("replaces userIds with usernames", () => {
+    it("replaces a userId with a username", () => {
+        const mockedLog = `Hello <@!${mockedUserIds[0]}>`;
         const actual = replaceUserIds(mockedMessageObj, mockedLog);
         expect(actual).toEqual("Hello @Guybrush");
+    });
+
+    it("replaces multiple userIds with usernames", () => {
+        const mockedLog = `Hello <@!${mockedUserIds[0]}> and <@!${mockedUserIds[1]}>`;
+        const actual = replaceUserIds(mockedMessageObj, mockedLog);
+        expect(actual).toEqual("Hello @Guybrush and @Elaine");
     });
 });
