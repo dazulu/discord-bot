@@ -1,5 +1,19 @@
-import config from "../../config.json";
+export const logMessage = (message) => {
+    const {
+        channel: { type, name },
+        author: { username, discriminator },
+        content,
+    } = message;
 
-export const withPrefix = (command) => {
-    return `${config.prefix}${command}`;
+    let source;
+    if (type === "text") {
+        source = `[#${name}]`;
+    } else {
+        source = `(${type})`;
+    }
+
+    const log = `${source} ${username}#${discriminator}: ${content}`;
+
+    console.log(message);
+    console.log(log);
 };
