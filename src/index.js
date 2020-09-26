@@ -1,12 +1,15 @@
 require("dotenv").config();
-import { withPrefix } from "./utils";
+import { prefix } from "../config.json";
+import { logMessage } from "./utils";
+import commands from "./commands/";
 
 const Discord = require("discord.js");
 const client = new Discord.Client();
+client.commands = new Discord.Collection();
 
-client.once("ready", () => {
-    console.log("Client ready!");
-});
+for (const command of commands) {
+    client.commands.set(command.name, command);
+}
 
 client
     .login(process.env.DISCORD_BOT_TOKEN)
@@ -18,25 +21,21 @@ client
     });
 
 client.on("message", (message) => {
-    const {
-        channel: { type, name },
-        author: { username, discriminator },
-        content,
-    } = message;
+    logMessage(message);
 
-    let source;
-    if (type === "text") {
-        source = `[#${name}]`;
-    } else {
-        source = `(${type})`;
-    }
+    if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-    const log = `${source} ${username}#${discriminator}: ${content}`;
+    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const commandName = args.shift().toLowerCase();
 
-    console.log(message);
-    console.log(log);
+    if (!client.commands.has(commandName)) return;
 
-    if (message.content === withPrefix("badger")) {
-        message.channel.send("mash");
+    const command = client.commands.get(commandName);
+
+    try {
+        command.execute(message, args);
+    } catch (error) {
+        console.error(error);
+        message.reply("++?????++ Out of Cheese Error.");
     }
 });
