@@ -5,11 +5,13 @@ import commands from "./commands/";
 
 const Discord = require("discord.js");
 const client = new Discord.Client();
-client.commands = new Discord.Collection();
 
+client.commands = new Discord.Collection();
 for (const command of commands) {
     client.commands.set(command.name, command);
 }
+
+const cooldowns = new Discord.Collection();
 
 client
     .login(process.env.DISCORD_BOT_TOKEN)
@@ -27,10 +29,30 @@ client.on("message", (message) => {
 
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
+    const command =
+        client.commands.get(commandName) ||
+        client.commands.find(
+            (cmd) => cmd.aliases && cmd.aliases.includes(commandName)
+        );
 
-    if (!client.commands.has(commandName)) return;
+    if (!command) return;
 
-    const command = client.commands.get(commandName);
+    if (!cooldowns.has(command.name)) {
+        cooldowns.set(command.name, new Discord.Collection());
+    }
+
+    const now = Date.now();
+    const timestamps = cooldowns.get(command.name);
+    const cooldownAmount = (command.cooldown || 3) * 1000;
+
+    if (timestamps.has(message.author.id)) {
+        const expirationTime =
+            timestamps.get(message.author.id) + cooldownAmount;
+        if (now < expirationTime) return;
+    } else {
+        timestamps.set(message.author.id, now);
+        setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+    }
 
     try {
         command.execute(message, args);
