@@ -1,10 +1,10 @@
 require("dotenv").config();
-import { prefix } from "../config.json";
+import Discord from "discord.js";
+import { prefix, clientConfig } from "../config.json";
 import { logMessage } from "./utils";
 import commands from "./commands/";
 
-const Discord = require("discord.js");
-const client = new Discord.Client();
+const client = new Discord.Client(clientConfig);
 
 client.commands = new Discord.Collection();
 for (const command of commands) {

@@ -1,4 +1,12 @@
 {
     "prefix": "€",
-    "cooldown": 5
+    "cooldown": 5,
+    "clientConfig": {
+        "presence": {
+            "activity": {
+                "name": "you",
+                "type": "WATCHING"
+            }
+        }
+    }
 }
