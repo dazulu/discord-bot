@@ -1,12 +1,11 @@
 require("dotenv").config();
-
-if (!process.env.DISCORD_BOT_TOKEN) throw Error("DISCORD_BOT_TOKEN not set");
+import { withPrefix } from "./utils";
 
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
 client.once("ready", () => {
-    console.log("Ready!");
+    console.log("Client ready!");
 });
 
 client
@@ -37,7 +36,7 @@ client.on("message", (message) => {
     console.log(message);
     console.log(log);
 
-    if (message.content === "!badger") {
+    if (message.content === withPrefix("badger")) {
         message.channel.send("mash");
     }
 });

@@ -1,11 +1,14 @@
 {
     "extends": "eslint:recommended",
+    "plugins": ["jest"],
     "env": {
         "node": true,
-        "es6": true
+        "es6": true,
+        "jest/globals": true
     },
     "parserOptions": {
-        "ecmaVersion": 2019
+        "ecmaVersion": 2019,
+        "sourceType": "module"
     },
     "rules": {
         "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
