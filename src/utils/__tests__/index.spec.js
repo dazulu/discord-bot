@@ -1,9 +1,9 @@
-import { logMessage } from "../";
+import { logMessage, replaceUserIds } from "../";
 
 describe("logMessage function", () => {
     const consoleSpy = jest.spyOn(console, "log");
 
-    it("logs value for type 'text", () => {
+    it("logs message for type 'text", () => {
         logMessage({
             channel: { type: "text", name: "general" },
             author: { username: "guybrush", discriminator: "000" },
@@ -14,7 +14,7 @@ describe("logMessage function", () => {
         );
     });
 
-    it("logs value for type 'dm", () => {
+    it("logs message for type 'dm", () => {
         logMessage({
             channel: { type: "dm" },
             author: { username: "guybrush", discriminator: "000" },
@@ -23,5 +23,30 @@ describe("logMessage function", () => {
         expect(consoleSpy).toHaveBeenCalledWith(
             "(dm) guybrush#000: I wanna be a pirate!"
         );
+    });
+});
+
+describe("replaceUserIds function", () => {
+    const mockedUserId = "12345";
+    const mockedLog = `Hello <@!${mockedUserId}>`;
+    const mockedMessageObj = {
+        client: {
+            users: {
+                cache: {
+                    get(id) {
+                        if (id === mockedUserId) {
+                            return { username: "Guybrush" };
+                        } else {
+                            return "";
+                        }
+                    },
+                },
+            },
+        },
+    };
+
+    it("replaces userIds with usernames", () => {
+        const actual = replaceUserIds(mockedMessageObj, mockedLog);
+        expect(actual).toEqual("Hello @Guybrush");
     });
 });
