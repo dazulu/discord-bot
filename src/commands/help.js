@@ -1,4 +1,4 @@
-import { prefix } from "../../config.json";
+import { prefix } from "../config.json";
 
 const help = {
     name: "help",

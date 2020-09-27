@@ -1,4 +1,4 @@
-import { cooldown } from "../../config.json";
+import { cooldown } from "../config.json";
 
 const hello = {
     name: "hello",

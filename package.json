@@ -2,19 +2,19 @@
     "name": "dcbot",
     "version": "0.0.1",
     "description": "",
-    "main": "dist/index.js",
+    "main": "src/index.js",
     "scripts": {
-        "dev": "nodemon --exec babel-node src/index.js",
-        "build": "npx webpack",
-        "prebuild": "rimraf dist",
-        "start": "node dist/bundle.js",
+        "start": "nodemon --exec babel-node src/server.js",
         "test": "jest"
     },
-    "author": "@IrishBeets",
+    "author": "Adrian Payne",
     "license": "ISC",
     "dependencies": {
+        "cors": "^2.8.5",
         "discord.js": "^12.3.1",
-        "dotenv": "^8.2.0"
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "socket.io": "^2.3.0"
     },
     "devDependencies": {
         "@babel/core": "^7.11.6",
