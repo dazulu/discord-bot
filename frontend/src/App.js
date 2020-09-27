@@ -42,6 +42,13 @@ function App() {
             console.log("c:", "disconnect");
             setSocketConnected(socket.connected);
         });
+
+        return () => {
+            if (socket) {
+                socket.off("connect");
+                socket.off("disconnect");
+            }
+        };
     }, [socket]);
 
     useEffect(() => {
@@ -52,6 +59,10 @@ function App() {
                 container.current.scrollTop = container.current.scrollHeight;
             });
         }
+
+        return () => {
+            if (socket) socket.off("new message");
+        };
     }, [socket, messages]);
 
     return (
