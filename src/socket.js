@@ -31,7 +31,7 @@ const socket = (io) => {
             console.log("s:", "subscribeToMessageEvent");
             discordClient.on("message", (message) => {
                 const messagePayload = logMessage(message);
-
+                console.log("sm:", message.content);
                 client.emit("new message", messagePayload);
 
                 if (!message.content.startsWith(prefix) || message.author.bot) {
