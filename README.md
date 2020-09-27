@@ -1,6 +1,6 @@
 > Heavy work in progress. Subject to breaking changes.
 
-# Discord Bot
+# Discord Multi-Chat
 
 Displays chat from Discord channels that a bot has joined, grouped by server membership. Node backend and React frontend, communicating via web sockets.
 
