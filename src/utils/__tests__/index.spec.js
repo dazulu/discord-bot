@@ -1,4 +1,4 @@
-import { logMessage, replaceUserIds, replaceEmojiIds } from "../";
+import { createMessagePayload, replaceUserIds, replaceEmojiIds } from "../";
 import {
     mockedTextMessage,
     mockedDirectMessage,
@@ -6,9 +6,9 @@ import {
     mockedMessageObj,
 } from "./mocks";
 
-describe("logMessage function", () => {
+describe("createMessagePayload function", () => {
     it("logs message for type 'text", () => {
-        const actual = logMessage(mockedTextMessage);
+        const actual = createMessagePayload(mockedTextMessage);
         expect(actual).toEqual({
             server: "Beets",
             username: "guybrush",
@@ -19,7 +19,7 @@ describe("logMessage function", () => {
     });
 
     it("logs message for type 'dm", () => {
-        const actual = logMessage(mockedDirectMessage);
+        const actual = createMessagePayload(mockedDirectMessage);
         expect(actual).toEqual({
             server: null,
             username: "guybrush",

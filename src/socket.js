@@ -1,7 +1,7 @@
 require("dotenv").config();
 import Discord from "discord.js";
 import { prefix, clientConfig } from "./config.json";
-import { logMessage } from "./utils";
+import { createMessagePayload } from "./utils";
 import commands from "./commands";
 
 const discordClient = new Discord.Client(clientConfig);
@@ -30,7 +30,7 @@ const socket = (io) => {
         client.on("subscribeToMessageEvent", () => {
             console.log("s:", "subscribeToMessageEvent");
             discordClient.on("message", (message) => {
-                const messagePayload = logMessage(message);
+                const messagePayload = createMessagePayload(message);
                 console.log("sm:", message.content);
                 client.emit("new message", messagePayload);
 

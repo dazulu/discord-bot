@@ -1,5 +1,5 @@
 export const replaceUserIds = (msgObject, msgString) => {
-    let logWithUsernames = msgString;
+    let withUsernames = msgString;
 
     const matches = [...msgString.matchAll(/<@!?(\d+)>/g)];
 
@@ -9,14 +9,14 @@ export const replaceUserIds = (msgObject, msgString) => {
         const user = msgObject.client.users.cache.get(userId);
 
         if (user && user.username) {
-            logWithUsernames = logWithUsernames.replace(
+            withUsernames = withUsernames.replace(
                 userString,
                 `@${user.username}`
             );
         }
     }
 
-    return logWithUsernames;
+    return withUsernames;
 };
 
 export const replaceEmojiIds = (msgString) => {
@@ -33,7 +33,7 @@ export const replaceEmojiIds = (msgString) => {
     return withEmojiStrings;
 };
 
-export const logMessage = (msgObject) => {
+export const createMessagePayload = (msgObject) => {
     const {
         channel: { type, name },
         author: { username, discriminator },
