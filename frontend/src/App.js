@@ -47,10 +47,12 @@ function App() {
     const scrollToEnds = () => {
         if (document) {
             [...document.querySelectorAll(".chat")].forEach((chatWindow) => {
-                chatWindow.lastChild.scrollIntoView({
-                    behavior: "smooth",
-                    block: "end",
-                });
+                if (chatWindow.lastChild) {
+                    chatWindow.lastChild.scrollIntoView({
+                        behavior: "smooth",
+                        block: "end",
+                    });
+                }
             });
         }
     };
