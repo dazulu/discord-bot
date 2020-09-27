@@ -1,21 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import io from "socket.io-client";
 
 function App() {
     const [socket, setSocket] = useState(null);
+    const container = useRef(null);
     const [socketConnected, setSocketConnected] = useState(false);
     const [messages, setMessages] = useState([]);
 
-    // manage socket connection
-    const handleSocketConnection = () => {
-        if (socketConnected) socket.disconnect();
-        else {
+    const connect = () => {
+        if (!socketConnected) {
+            console.log("c:", "connect");
             socket.connect();
+            setSocketConnected(true);
+        }
+    };
+
+    const disconnect = () => {
+        if (socketConnected) {
+            console.log("c:", "disconnect");
+            socket.disconnect();
+            setSocketConnected(false);
         }
     };
 
     // establish socket connection
     useEffect(() => {
+        console.log("c:", "establish socket connection");
         setSocket(io("http://localhost:4000"));
     }, []);
 
@@ -24,10 +34,12 @@ function App() {
         if (!socket) return;
 
         socket.on("connect", () => {
+            console.log("c:", "connect");
             setSocketConnected(socket.connected);
             socket.emit("subscribeToMessageEvent");
         });
         socket.on("disconnect", () => {
+            console.log("c:", "disconnect");
             setSocketConnected(socket.connected);
         });
     }, [socket]);
@@ -35,7 +47,9 @@ function App() {
     useEffect(() => {
         if (socket) {
             socket.on("new message", (message) => {
+                console.log("c:", "new message");
                 setMessages([...messages, message]);
+                container.current.scrollTop = container.current.scrollHeight;
             });
         }
     }, [socket, messages]);
@@ -48,10 +62,17 @@ function App() {
             </div>
             <input
                 type="button"
-                value={socketConnected ? "Disconnect" : "Connect"}
-                onClick={handleSocketConnection}
+                value="Connect"
+                onClick={connect}
+                disabled={socketConnected}
             />
-            <div className="column">
+            <input
+                type="button"
+                value="Disconnect"
+                onClick={disconnect}
+                disabled={!socketConnected}
+            />
+            <div className="column" ref={container}>
                 {messages.map(
                     (
                         { server, username, discriminator, source, content },

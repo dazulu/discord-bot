@@ -24,10 +24,11 @@ discordClient
 
 const socket = (io) => {
     io.on("connection", (client) => {
-        console.log("New Connection");
+        console.log("s:", "New Connection");
 
         // socket event for client subscription
         client.on("subscribeToMessageEvent", () => {
+            console.log("s:", "subscribeToMessageEvent");
             discordClient.on("message", (message) => {
                 const messagePayload = logMessage(message);
 
@@ -79,10 +80,10 @@ const socket = (io) => {
                 }
             });
         });
-    });
 
-    io.on("disconnect", () => {
-        console.log("Socket disconnected.");
+        client.on("disconnect", () => {
+            console.log("Socket disconnected.");
+        });
     });
 };
 
