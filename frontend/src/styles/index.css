@@ -2,7 +2,6 @@
 
 body {
     margin: 0;
-    padding: 20px;
     font-family: "Palanquin", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -13,21 +12,68 @@ code {
         monospace;
 }
 
-.column {
-    background: #36393f;
-    border-radius: 5px;
-    color: #fff;
-    padding: 20px;
-    margin-top: 30px;
-    max-width: 800px;
-    width: 100%;
-    height: 60vh;
-    overflow-y: scroll;
+.header {
+    background-color: #2f3136;
+    padding: 10px 20px;
+    height: 80px;
+    text-align: center;
 }
 
-.server {
-    color: rgba(255, 255, 255, 0.4);
-    margin-right: 5px;
+.icon {
+    position: relative;
+    top: 2px;
+    margin-right: 3px;
+    width: 24px;
+    height: 24px;
+}
+
+.title {
+    display: inline-flex;
+    color: #fff;
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+}
+
+.button {
+    background: #b9bbbe;
+    border: 0;
+    border-radius: 5px;
+    margin-left: 5px;
+    font-size: 1rem;
+}
+
+.button:disabled {
+    opacity: 0.3;
+}
+
+.servers {
+    padding: 20px;
+}
+
+.column-misc {
+    opacity: 0.4;
+    transition: opacity 150ms ease-out;
+}
+
+.column-misc:hover {
+    opacity: 1;
+}
+
+.column-name {
+    color: #000;
+    font-size: 1.4rem;
+    text-transform: capitalize;
+}
+
+.chat {
+    width: 100%;
+    border-radius: 5px;
+    background: #36393f;
+    color: #fff;
+    overflow-y: scroll;
+    padding: 20px;
+    height: 200px;
+    margin-bottom: 20px;
 }
 
 .source {
@@ -50,4 +96,29 @@ code {
 .message {
     color: #dcddde;
     font-weight: 400;
+}
+
+@media only screen and (min-width: 500px) {
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        text-align: initial;
+    }
+}
+
+@media only screen and (min-width: 800px) {
+    .servers {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        grid-gap: 40px;
+        min-height: calc(100vh - 100px);
+        height: 100%;
+    }
+
+    .chat {
+        height: 100%;
+        margin-bottom: 0;
+    }
 }
