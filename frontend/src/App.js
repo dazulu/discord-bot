@@ -6,7 +6,6 @@ import Message from "./components/message";
 function App() {
     const [socket, setSocket] = useState();
     const [socketConnected, setSocketConnected] = useState(false);
-    const [messages, setMessages] = useState([]);
     const [groupedMessages, setGroupedMessages] = useState({ misc: [] });
 
     const connect = () => {
@@ -73,8 +72,6 @@ function App() {
     useEffect(() => {
         if (socket) {
             socket.on("new message", (message) => {
-                setMessages([...messages, message]);
-
                 const serverName = message.server;
                 if (serverName) {
                     if (!groupedMessages[serverName]) {
@@ -103,7 +100,7 @@ function App() {
         return () => {
             if (socket) socket.off("new message");
         };
-    }, [socket, messages, groupedMessages]);
+    }, [socket, groupedMessages]);
 
     return (
         <>
