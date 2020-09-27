@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=Palanquin:wght@400;600&display=swap");
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: "Palanquin", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
+}
+
+.column {
+    background: #36393f;
+    border-radius: 5px;
+    color: #fff;
+    padding: 10px 20px;
+    margin-top: 30px;
+    max-width: 800px;
+    width: 100%;
+    height: 60vh;
+}
+
+.server {
+    color: rgba(255, 255, 255, 0.4);
+    margin-right: 5px;
+}
+
+.source {
+    color: #a2d9ea;
+    margin-right: 5px;
+}
+
+.username {
+    font-weight: 700;
+}
+
+.discriminator {
+    color: #5c5e62;
+}
+
+.custom-emoji {
+    color: #ddc28e;
+}
+
+.message {
+    color: #dcddde;
+    font-weight: 400;
+}
