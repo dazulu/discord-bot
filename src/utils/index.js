@@ -1,45 +1,62 @@
-export const replaceUserIds = (message, log) => {
-    let logWithUsernames = log;
+export const replaceUserIds = (msgObject, msgString) => {
+    let logWithUsernames = msgString;
 
-    const matches = log.matchAll(/<@!?(\d+)>/g);
-    const mentions = Array.from(matches);
+    const matches = [...msgString.matchAll(/<@!?(\d+)>/g)];
 
-    if (mentions) {
-        for (const i in mentions) {
-            const userString = mentions[i][0];
-            const userId = mentions[i][1];
-            const user = message.client.users.cache.get(userId);
+    for (const i in matches) {
+        const userString = matches[i][0];
+        const userId = matches[i][1];
+        const user = msgObject.client.users.cache.get(userId);
 
-            if (user && user.username) {
-                logWithUsernames = logWithUsernames.replace(
-                    userString,
-                    `@${user.username}`
-                );
-            }
+        if (user && user.username) {
+            logWithUsernames = logWithUsernames.replace(
+                userString,
+                `@${user.username}`
+            );
         }
     }
 
     return logWithUsernames;
 };
 
-export const logMessage = (message) => {
+export const replaceEmojiIds = (msgString) => {
+    let withEmojiStrings = msgString;
+    const matches = [...msgString.matchAll(/<a?:(\w+):\w+>/g)];
+
+    for (const i in matches) {
+        withEmojiStrings = withEmojiStrings.replace(
+            matches[i][0],
+            `<span class="custom-emoji">${matches[i][1]}</span>`
+        );
+    }
+
+    return withEmojiStrings;
+};
+
+export const logMessage = (msgObject) => {
     const {
         channel: { type, name },
         author: { username, discriminator },
         content,
-    } = message;
+    } = msgObject;
 
     let source;
     if (type === "text") {
-        source = `[#${name}]`;
+        source = `${name}`;
     } else {
-        source = `(${type})`;
+        source = `${type}`;
     }
+    const withUsernames = replaceUserIds(msgObject, content);
+    const withEmojiName = replaceEmojiIds(withUsernames);
 
-    console.log(
-        replaceUserIds(
-            message,
-            `${source} ${username}#${discriminator}: ${content}`
-        )
-    );
+    const messagePayload = {
+        server: msgObject.guild ? msgObject.guild.name : null,
+        username: `${username}`,
+        discriminator,
+        source,
+        content: withEmojiName,
+    };
+
+    // console.log(messagePayload);
+    return messagePayload;
 };
