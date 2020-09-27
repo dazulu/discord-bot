@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
+import Header from "./components/header";
 import Message from "./components/message";
-import { ReactComponent as Logo } from "./forum.svg";
 
 function App() {
     const [socket, setSocket] = useState();
@@ -11,7 +11,6 @@ function App() {
 
     const connect = () => {
         if (!socketConnected) {
-            console.log("c:", "connect");
             socket.connect();
             setSocketConnected(true);
         }
@@ -19,10 +18,28 @@ function App() {
 
     const disconnect = () => {
         if (socketConnected) {
-            console.log("c:", "disconnect");
             socket.disconnect();
             setSocketConnected(false);
         }
+    };
+
+    const renderChats = (items) => {
+        let jsx = [];
+        for (const key in items) {
+            jsx.push(
+                <div
+                    className={`column ${key === "misc" ? "column-misc" : ""}`}
+                >
+                    <h2 className="column-name">{key}</h2>
+                    <div className="chat">
+                        {items[key].map((messages) => (
+                            <Message key={key} {...messages} />
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+        return jsx;
     };
 
     // establish socket connection
@@ -88,55 +105,14 @@ function App() {
         };
     }, [socket, messages, groupedMessages]);
 
-    const renderChats = (items) => {
-        let jsx = [];
-        for (const key in items) {
-            console.log(key, items[key]);
-            jsx.push(
-                <div
-                    className={`column ${key === "misc" ? "column-misc" : ""}`}
-                >
-                    <h2 className="column-name">{key}</h2>
-                    <div className="chat">
-                        {items[key].map((messages) => (
-                            <Message key={key} {...messages} />
-                        ))}
-                    </div>
-                </div>
-            );
-        }
-
-        return jsx;
-    };
-
     return (
         <>
-            <header className="header">
-                <h1 className="title">
-                    <Logo className="icon" />
-                    Discord Multi-Server
-                </h1>
-                <div>
-                    <input
-                        className="button"
-                        type="button"
-                        value="Connect"
-                        onClick={connect}
-                        disabled={socketConnected}
-                    />
-                    <input
-                        className="button"
-                        type="button"
-                        value="Disconnect"
-                        onClick={disconnect}
-                        disabled={!socketConnected}
-                    />
-                </div>
-            </header>
+            <Header
+                connect={connect}
+                disconnect={disconnect}
+                socketConnected={socketConnected}
+            />
             <main className="servers">{renderChats(groupedMessages)}</main>
-            {/* {messages.map((message, index) => (
-                <Message key={index} {...message} />
-            ))} */}
         </>
     );
 }
