@@ -77,6 +77,10 @@ code {
     margin-bottom: 20px;
 }
 
+.chat > div:last-child {
+    padding-bottom: 12px;
+}
+
 .source {
     color: #a2d9ea;
     margin-right: 5px;

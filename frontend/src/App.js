@@ -6,7 +6,9 @@ import Message from "./components/message";
 function App() {
     const [socket, setSocket] = useState();
     const [socketConnected, setSocketConnected] = useState(false);
-    const [groupedMessages, setGroupedMessages] = useState({ misc: [] });
+    const [groupedMessages, setGroupedMessages] = useState({
+        misc: [],
+    });
 
     const connect = () => {
         if (!socketConnected) {
@@ -39,6 +41,18 @@ function App() {
             );
         }
         return jsx;
+    };
+
+    // scroll to ends of all chat windows on new message
+    const scrollToEnds = () => {
+        if (document) {
+            [...document.querySelectorAll(".chat")].forEach((chatWindow) => {
+                chatWindow.lastChild.scrollIntoView({
+                    behavior: "smooth",
+                    block: "end",
+                });
+            });
+        }
     };
 
     // establish socket connection
@@ -94,6 +108,8 @@ function App() {
                         misc: [...groupedMessages.misc, message],
                     });
                 }
+
+                scrollToEnds();
             });
         }
 
