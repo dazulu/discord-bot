@@ -1,6 +1,7 @@
 export const mockedTextMessage = {
     channel: { type: "text", name: "general" },
     author: { username: "guybrush", discriminator: "000" },
+    guild: { name: "Beets" },
     content: "I wanna be a pirate!",
 };
 
