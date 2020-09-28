@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 const Image = ({ url, width }) => {
+    const imageEl = useRef(null);
     const [collapsed, setCollapsed] = useState(false);
+    const [loaded, setLoaded] = useState(false);
 
     const handleClick = (e) => {
         /*
@@ -10,6 +12,18 @@ const Image = ({ url, width }) => {
          */
         e.preventDefault();
         setCollapsed(!collapsed);
+    };
+
+    const handleLoad = () => {
+        if (loaded) return;
+        setLoaded(true);
+
+        if (imageEl) {
+            const parentChatEl = imageEl.current.closest(".chat");
+            if (parentChatEl) {
+                parentChatEl.scrollTop = parentChatEl.scrollHeight;
+            }
+        }
     };
 
     return (
@@ -23,8 +37,10 @@ const Image = ({ url, width }) => {
                     <img
                         alt=""
                         src={url}
-                        className="image-attachment"
+                        ref={imageEl}
+                        className={`image-attachment ${loaded ? "loaded" : ""}`}
                         style={{ width: width > 400 ? "400px" : `${width}px` }}
+                        onLoad={handleLoad}
                     />
                 </a>
             )}

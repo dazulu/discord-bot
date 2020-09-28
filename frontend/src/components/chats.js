@@ -38,6 +38,7 @@ const Chats = ({ message }) => {
                 misc: [...messagesByServer.misc, message],
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [message]);
 
     return <main className="servers">{generateChats(messagesByServer)}</main>;
