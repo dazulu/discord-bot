@@ -129,7 +129,7 @@ function App() {
         return () => {
             if (socket) socket.off("new message");
         };
-    }, [socket, groupedMessages]);
+    }, [socket, groupedMessages, scrollToEnds]);
 
     return (
         <>
