@@ -33,6 +33,14 @@ export const replaceEmojiIds = (msgString) => {
     return withEmojiStrings;
 };
 
+export const getImageAttachments = (attachments) =>
+    attachments.reduce((images, item) => {
+        if (item.width && typeof item.width === "number") {
+            return [...images, { url: item.url, width: item.width }];
+        }
+        return [...images];
+    }, []);
+
 export const createMessagePayload = (msgObject) => {
     const {
         channel: { type, name },
@@ -54,6 +62,7 @@ export const createMessagePayload = (msgObject) => {
         username: `${username}`,
         discriminator,
         source,
+        images: getImageAttachments(msgObject.attachments),
         content: withEmojiName,
     };
 

@@ -1,30 +1,66 @@
-import { createMessagePayload, replaceUserIds, replaceEmojiIds } from "../";
+import {
+    createMessagePayload,
+    replaceUserIds,
+    replaceEmojiIds,
+    getImageAttachments,
+} from "../";
 import {
     mockedTextMessage,
     mockedDirectMessage,
     mockedUserIds,
     mockedMessageObj,
+    mockedImageAttachmentMessage,
+    mockedNonImageAttachmentMessage,
 } from "./mocks";
 
 describe("createMessagePayload function", () => {
-    it("logs message for type 'text", () => {
+    it("generates payload for type 'text", () => {
         const actual = createMessagePayload(mockedTextMessage);
         expect(actual).toEqual({
             server: "Beets",
             username: "guybrush",
             discriminator: "000",
             source: "general",
+            images: [],
             content: "I wanna be a pirate!",
         });
     });
 
-    it("logs message for type 'dm", () => {
+    it("generates payload for type 'dm", () => {
         const actual = createMessagePayload(mockedDirectMessage);
         expect(actual).toEqual({
             server: null,
             username: "guybrush",
             discriminator: "000",
             source: "dm",
+            images: [],
+            content: "I wanna be a pirate!",
+        });
+    });
+
+    it("generates payload with image attachements", () => {
+        const actual = createMessagePayload(mockedImageAttachmentMessage);
+        expect(actual).toEqual({
+            server: null,
+            username: "guybrush",
+            discriminator: "000",
+            source: "dm",
+            images: [
+                { url: "some-url", width: 100 },
+                { url: "some-other-url", width: 200 },
+            ],
+            content: "I wanna be a pirate!",
+        });
+    });
+
+    it("generates payload without image attachements", () => {
+        const actual = createMessagePayload(mockedNonImageAttachmentMessage);
+        expect(actual).toEqual({
+            server: null,
+            username: "guybrush",
+            discriminator: "000",
+            source: "dm",
+            images: [],
             content: "I wanna be a pirate!",
         });
     });
@@ -60,5 +96,24 @@ describe("replaceEmojiIds function", () => {
         expect(actual).toEqual(
             'Hello <span class="custom-emoji">pepeFeet</span> and <span class="custom-emoji">appleGrin</span><span class="custom-emoji">lul</span>' // eslint-disable-line quotes
         );
+    });
+});
+
+describe("getImageAttachments function", () => {
+    it("gets image URLs when image(s) attached", () => {
+        const actual = getImageAttachments(
+            mockedImageAttachmentMessage.attachments
+        );
+        expect(actual).toEqual([
+            { url: "some-url", width: 100 },
+            { url: "some-other-url", width: 200 },
+        ]);
+    });
+
+    it("ignores attachment if it has no width", () => {
+        const actual = getImageAttachments(
+            mockedNonImageAttachmentMessage.attachments
+        );
+        expect(actual).toEqual([]);
     });
 });

@@ -1,17 +1,21 @@
 import React from "react";
+import Image from "./image";
 
-const Chat = ({ server, username, discriminator, source, content }) => {
+const Chat = ({ username, discriminator, source, images, content }) => {
     return (
         <div>
             <span className="source">[{source}]</span>
             <span className="username">{username}</span>
             <span className="discriminator">#{discriminator}: </span>
-            <span
-                className="message"
-                dangerouslySetInnerHTML={{
-                    __html: content,
-                }}
-            />
+            {content && (
+                <span
+                    className="message"
+                    dangerouslySetInnerHTML={{
+                        __html: content,
+                    }}
+                />
+            )}
+            {images && images.map((image, i) => <Image {...image} key={i} />)}
         </div>
     );
 };
