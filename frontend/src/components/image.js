@@ -1,9 +1,8 @@
 import React, { useState, useRef } from "react";
 
-const Image = ({ url, width }) => {
+const Image = ({ url, width, height }) => {
     const imageEl = useRef(null);
     const [collapsed, setCollapsed] = useState(false);
-    const [loaded, setLoaded] = useState(false);
 
     const handleClick = (e) => {
         /*
@@ -14,16 +13,38 @@ const Image = ({ url, width }) => {
         setCollapsed(!collapsed);
     };
 
-    const handleLoad = () => {
-        if (loaded) return;
-        setLoaded(true);
+    // We're basically constraining to an area of 300 x 300 or less
+    const getImageSize = (width, height) => {
+        const constraint = 300;
+        let newWidth, newHeight;
 
-        if (imageEl) {
-            const parentChatEl = imageEl.current.closest(".chat");
-            if (parentChatEl) {
-                parentChatEl.scrollTop = parentChatEl.scrollHeight;
+        if (width > height) {
+            if (width > constraint) {
+                newWidth = constraint;
+                newHeight = height * (constraint / width);
+            } else {
+                newWidth = width;
+                newHeight = height;
+            }
+        } else if (height > width) {
+            if (height > constraint) {
+                newHeight = constraint;
+                newWidth = width * (constraint / height);
+            } else {
+                newWidth = width;
+                newHeight = height;
+            }
+        } else {
+            if (width > constraint) {
+                newWidth = constraint;
+                newHeight = constraint;
+            } else {
+                newWidth = width;
+                newHeight = height;
             }
         }
+
+        return { width: `${newWidth}px`, height: `${newHeight}px` };
     };
 
     return (
@@ -38,9 +59,8 @@ const Image = ({ url, width }) => {
                         alt=""
                         src={url}
                         ref={imageEl}
-                        className={`image-attachment ${loaded ? "loaded" : ""}`}
-                        style={{ width: width > 400 ? "400px" : `${width}px` }}
-                        onLoad={handleLoad}
+                        className="image-attachment"
+                        style={{ ...getImageSize(width, height) }}
                     />
                 </a>
             )}

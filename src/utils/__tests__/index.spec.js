@@ -46,8 +46,8 @@ describe("createMessagePayload function", () => {
             discriminator: "000",
             source: "dm",
             images: [
-                { url: "some-url", width: 100 },
-                { url: "some-other-url", width: 200 },
+                { url: "some-url", width: 100, height: 100 },
+                { url: "some-other-url", width: 200, height: 200 },
             ],
             content: "I wanna be a pirate!",
         });
@@ -105,8 +105,8 @@ describe("getImageAttachments function", () => {
             mockedImageAttachmentMessage.attachments
         );
         expect(actual).toEqual([
-            { url: "some-url", width: 100 },
-            { url: "some-other-url", width: 200 },
+            { url: "some-url", width: 100, height: 100 },
+            { url: "some-other-url", width: 200, height: 200 },
         ]);
     });
 

@@ -21,11 +21,13 @@ export const mockedImageAttachmentMessage = {
             name: "foo",
             url: "some-url",
             width: 100,
+            height: 100,
         },
         {
             name: "bar",
             url: "some-other-url",
             width: 200,
+            height: 200,
         },
     ],
     content: "I wanna be a pirate!",

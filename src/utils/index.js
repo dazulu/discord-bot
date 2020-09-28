@@ -36,7 +36,10 @@ export const replaceEmojiIds = (msgString) => {
 export const getImageAttachments = (attachments) =>
     attachments.reduce((images, item) => {
         if (item.width && typeof item.width === "number") {
-            return [...images, { url: item.url, width: item.width }];
+            return [
+                ...images,
+                { url: item.url, width: item.width, height: item.height },
+            ];
         }
         return [...images];
     }, []);
