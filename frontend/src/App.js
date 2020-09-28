@@ -43,15 +43,26 @@ function App() {
         return jsx;
     };
 
+    const scrollIntoView = (element) => {
+        element.scrollIntoView({
+            alignToTop: false,
+            behavior: "smooth",
+            block: "end",
+        });
+    };
+
     // scroll to ends of all chat windows on new message
     const scrollToEnds = () => {
         if (document) {
             [...document.querySelectorAll(".chat")].forEach((chatWindow) => {
                 if (chatWindow.lastChild) {
-                    chatWindow.lastChild.scrollIntoView({
-                        behavior: "smooth",
-                        block: "end",
-                    });
+                    scrollIntoView(chatWindow.lastChild);
+                    // giving image an extra second and trying again
+                    // scroll otherwise happens before image has taken up space
+                    setTimeout(
+                        () => scrollIntoView(chatWindow.lastChild),
+                        1000
+                    );
                 }
             });
         }
