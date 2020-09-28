@@ -21,6 +21,7 @@ const Image = ({ url, width }) => {
             ) : (
                 <a href={url} onClick={handleClick} rel="noopener noreferrer">
                     <img
+                        alt=""
                         src={url}
                         className="image-attachment"
                         style={{ width: width > 400 ? "400px" : `${width}px` }}
