@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { constrainDimensions } from "../lib/images";
 
-const Image = ({ url, width, height }) => {
+const Video = ({ url, width, height }) => {
     const [collapsed, setCollapsed] = useState(false);
 
     const handleClick = (e) => {
@@ -24,23 +24,19 @@ const Image = ({ url, width, height }) => {
         <>
             {collapsed ? (
                 <span class="item--collapsed" onClick={handleClick}>
-                    Show Image
+                    Show Video
                 </span>
             ) : (
-                <a href={url} onClick={handleClick} rel="noopener noreferrer">
-                    <img
-                        alt=""
-                        src={url}
-                        className="message-attachment"
-                        style={{
-                            width: `${constrainedWidth}px`,
-                            height: `${constrainedHeight}px`,
-                        }}
-                    />
-                </a>
+                <video
+                    controls
+                    width={constrainedWidth}
+                    height={constrainedHeight}
+                    src={url}
+                    className="message-attachment"
+                />
             )}
         </>
     );
 };
 
-export default Image;
+export default Video;

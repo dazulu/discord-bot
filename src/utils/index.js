@@ -33,19 +33,32 @@ export const replaceEmojiIds = (msgString) => {
     return withEmojiStrings;
 };
 
-export const getImageAttachments = (attachments) =>
-    attachments.reduce((images, item) => {
-        if (item.width && typeof item.width === "number") {
+export const getAttachments = (attachments, type) => {
+    let pattern;
+
+    if (type === "images") {
+        pattern = new RegExp("^.*[.](gif|jpg|jpeg|avif|webp|bmp|png)$", "i");
+    } else if (type === "videos") {
+        pattern = new RegExp("^.*[.](mp4|mov|3gp|mpg|mpeg|avi)$", "i");
+    } else {
+        return [];
+    }
+
+    return attachments.reduce((items, item) => {
+        if (pattern.test(item.url) && typeof item.width === "number") {
             return [
-                ...images,
+                ...items,
                 { url: item.url, width: item.width, height: item.height },
             ];
         }
-        return [...images];
+        return [...items];
     }, []);
+};
 
 export const createMessagePayload = (msgObject) => {
+    console.log(msgObject);
     const {
+        attachments,
         channel: { type, name },
         author: { username, discriminator },
         content,
@@ -65,7 +78,8 @@ export const createMessagePayload = (msgObject) => {
         username: `${username}`,
         discriminator,
         source,
-        images: getImageAttachments(msgObject.attachments),
+        images: getAttachments(attachments, "images"),
+        videos: getAttachments(attachments, "videos"),
         content: withEmojiName,
     };
 

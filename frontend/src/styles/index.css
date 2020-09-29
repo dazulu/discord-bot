@@ -103,7 +103,7 @@ code {
     font-weight: 400;
 }
 
-.image-attachment {
+.message-attachment {
     display: block;
     padding: 4px 0;
 }
@@ -139,7 +139,7 @@ code {
 @media only screen and (min-width: 800px) {
     .servers {
         display: grid;
-        grid-template-rows: repeat(auto-fit, 30vh);
+        grid-template-rows: repeat(auto-fit, 38vh);
         grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
         grid-gap: 40px;
         min-height: calc(100vh - 100px);

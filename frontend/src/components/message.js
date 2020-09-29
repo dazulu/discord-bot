@@ -1,7 +1,8 @@
 import React from "react";
 import Image from "./image";
+import Video from "./video";
 
-const Chat = ({ username, discriminator, source, images, content }) => {
+const Chat = ({ username, discriminator, source, videos, images, content }) => {
     return (
         <div>
             <span className="source">[{source}]</span>
@@ -16,6 +17,7 @@ const Chat = ({ username, discriminator, source, images, content }) => {
                 />
             )}
             {images && images.map((image, i) => <Image {...image} key={i} />)}
+            {videos && videos.map((video, i) => <Video {...video} key={i} />)}
         </div>
     );
 };

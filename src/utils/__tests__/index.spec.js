@@ -2,15 +2,14 @@ import {
     createMessagePayload,
     replaceUserIds,
     replaceEmojiIds,
-    getImageAttachments,
+    getAttachments,
 } from "../";
 import {
     mockedTextMessage,
     mockedDirectMessage,
     mockedUserIds,
     mockedMessageObj,
-    mockedImageAttachmentMessage,
-    mockedNonImageAttachmentMessage,
+    mockedAttachmentsMessage,
 } from "./mocks";
 
 describe("createMessagePayload function", () => {
@@ -22,6 +21,7 @@ describe("createMessagePayload function", () => {
             discriminator: "000",
             source: "general",
             images: [],
+            videos: [],
             content: "I wanna be a pirate!",
         });
     });
@@ -34,34 +34,38 @@ describe("createMessagePayload function", () => {
             discriminator: "000",
             source: "dm",
             images: [],
+            videos: [],
             content: "I wanna be a pirate!",
         });
     });
 
-    it("generates payload with image attachements", () => {
-        const actual = createMessagePayload(mockedImageAttachmentMessage);
+    it("generates payload with attachments", () => {
+        const actual = createMessagePayload(mockedAttachmentsMessage);
         expect(actual).toEqual({
-            server: null,
+            server: "Beets",
             username: "guybrush",
             discriminator: "000",
-            source: "dm",
+            source: "general",
             images: [
-                { url: "some-url", width: 100, height: 100 },
-                { url: "some-other-url", width: 200, height: 200 },
+                {
+                    url: "some-image.jpg",
+                    width: 100,
+                    height: 100,
+                },
+                {
+                    url: "some-other-image.gif",
+                    width: 200,
+                    height: 200,
+                },
             ],
-            content: "I wanna be a pirate!",
-        });
-    });
-
-    it("generates payload without image attachements", () => {
-        const actual = createMessagePayload(mockedNonImageAttachmentMessage);
-        expect(actual).toEqual({
-            server: null,
-            username: "guybrush",
-            discriminator: "000",
-            source: "dm",
-            images: [],
-            content: "I wanna be a pirate!",
+            videos: [
+                {
+                    url: "some-video-url.mp4",
+                    width: 300,
+                    height: 300,
+                },
+            ],
+            content: "",
         });
     });
 });
@@ -99,21 +103,37 @@ describe("replaceEmojiIds function", () => {
     });
 });
 
-describe("getImageAttachments function", () => {
-    it("gets image URLs when image(s) attached", () => {
-        const actual = getImageAttachments(
-            mockedImageAttachmentMessage.attachments
+describe("getAttachments function", () => {
+    it("gets images", () => {
+        const actual = getAttachments(
+            mockedAttachmentsMessage.attachments,
+            "images"
         );
         expect(actual).toEqual([
-            { url: "some-url", width: 100, height: 100 },
-            { url: "some-other-url", width: 200, height: 200 },
+            {
+                url: "some-image.jpg",
+                width: 100,
+                height: 100,
+            },
+            {
+                url: "some-other-image.gif",
+                width: 200,
+                height: 200,
+            },
         ]);
     });
 
-    it("ignores attachment if it has no width", () => {
-        const actual = getImageAttachments(
-            mockedNonImageAttachmentMessage.attachments
+    it("gets videos", () => {
+        const actual = getAttachments(
+            mockedAttachmentsMessage.attachments,
+            "videos"
         );
-        expect(actual).toEqual([]);
+        expect(actual).toEqual([
+            {
+                url: "some-video-url.mp4",
+                width: 300,
+                height: 300,
+            },
+        ]);
     });
 });

@@ -13,36 +13,37 @@ export const mockedDirectMessage = {
     content: "I wanna be a pirate!",
 };
 
-export const mockedImageAttachmentMessage = {
-    channel: { type: "dm" },
+export const mockedAttachmentsMessage = {
+    channel: { type: "text", name: "general" },
     author: { username: "guybrush", discriminator: "000" },
+    guild: { name: "Beets" },
     attachments: [
         {
             name: "foo",
-            url: "some-url",
+            url: "some-image.jpg",
             width: 100,
             height: 100,
         },
         {
             name: "bar",
-            url: "some-other-url",
+            url: "some-other-image.gif",
             width: 200,
             height: 200,
         },
-    ],
-    content: "I wanna be a pirate!",
-};
-
-export const mockedNonImageAttachmentMessage = {
-    channel: { type: "dm" },
-    author: { username: "guybrush", discriminator: "000" },
-    attachments: [
         {
-            name: "bar",
-            url: "some-non-image-url",
+            name: "vid",
+            url: "some-video-url.mp4",
+            width: 300,
+            height: 300,
+        },
+        {
+            name: "boop",
+            url: "some-weird-thing",
+            width: 400,
+            height: 400,
         },
     ],
-    content: "I wanna be a pirate!",
+    content: "",
 };
 
 export const mockedUserIds = ["12345", "56789"];
