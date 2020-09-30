@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import io from "socket.io-client";
-import { addMessage } from "./redux/messages/actions";
-import Header from "./components/header";
-import Chats from "./components/chats";
 
-function App({ addMessage }) {
+import Chats from "./components/chats";
+import Header from "./components/header";
+import io from "socket.io-client";
+import { useDispatch } from "react-redux";
+
+function App() {
+    const dispatch = useDispatch();
     const [socket, setSocket] = useState();
     const [socketConnected, setSocketConnected] = useState(false);
-    const [message, setMessage] = useState({});
 
     const connect = () => {
         if (!socketConnected) {
@@ -57,8 +57,7 @@ function App({ addMessage }) {
     useEffect(() => {
         if (socket) {
             socket.on("new message", (message) => {
-                setMessage(message);
-                addMessage(message);
+                dispatch({ type: "ADD_MESSAGE", message });
             });
         }
 
@@ -67,7 +66,7 @@ function App({ addMessage }) {
                 socket.off("new message");
             }
         };
-    }, [socket]);
+    }, [socket, dispatch]);
 
     return (
         <>
@@ -76,21 +75,9 @@ function App({ addMessage }) {
                 disconnect={disconnect}
                 socketConnected={socketConnected}
             />
-            <Chats message={message} />
+            <Chats />
         </>
     );
 }
 
-const mapStateToProps = (state) => {
-    return {
-        messages: state.chat.messages,
-    };
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        addMessage: (message) => dispatch(addMessage(message)),
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

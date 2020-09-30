@@ -1,47 +1,19 @@
-import React, { useState, useEffect } from "react";
 import Chat from "./chat";
+import React from "react";
+import { useSelector } from "react-redux";
 
-/*
- * ToDo: Refactor message storage into Redux because this is uggggly
- */
-
-const Chats = ({ message }) => {
-    const [messagesByServer, setMessagesByServer] = useState({
-        misc: [],
-    });
+const Chats = () => {
+    const { messages } = useSelector((state) => state.chat);
 
     const generateChats = (items) => {
-        let jsx = [];
+        let markup = [];
         for (const key in items) {
-            jsx.push(<Chat name={key} messages={items[key]} />);
+            markup.push(<Chat name={key} messages={items[key]} />);
         }
-        return jsx;
+        return markup;
     };
 
-    useEffect(() => {
-        const serverName = message.server;
-        if (message && serverName) {
-            if (!messagesByServer[serverName]) {
-                setMessagesByServer({
-                    ...messagesByServer,
-                    [serverName]: [message],
-                });
-            } else {
-                setMessagesByServer({
-                    ...messagesByServer,
-                    [serverName]: [...messagesByServer[serverName], message],
-                });
-            }
-        } else if (message.content) {
-            setMessagesByServer({
-                ...messagesByServer,
-                misc: [...messagesByServer.misc, message],
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [message]);
-
-    return <main className="servers">{generateChats(messagesByServer)}</main>;
+    return <main className="servers">{generateChats(messages)}</main>;
 };
 
 export default Chats;
