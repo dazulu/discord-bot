@@ -1,0 +1,16 @@
+.wrapper {
+    background: red;
+    margin: 30px;
+    display: inline-block;
+    overflow: hidden;
+    width: 200px;
+    resize: both;
+    overflow: auto;
+    position: relative;
+}
+
+.inner {
+    background: silver;
+    padding: 34px;
+    width: 100%;
+}

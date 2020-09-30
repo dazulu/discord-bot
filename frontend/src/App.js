@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import Header from "./components/header";
 import Chats from "./components/chats";
+import Resizeme from "./components/resizeme";
 
 function App() {
     const [socket, setSocket] = useState();
@@ -71,7 +72,8 @@ function App() {
                 disconnect={disconnect}
                 socketConnected={socketConnected}
             />
-            <Chats message={message} />
+            <Resizeme />
+            {/* <Chats message={message} /> */}
         </>
     );
 }
