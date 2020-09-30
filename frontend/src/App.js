@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import io from "socket.io-client";
+import { addMessage } from "./redux/messages/actions";
 import Header from "./components/header";
 import Chats from "./components/chats";
 
-function App() {
+function App({ addMessage }) {
     const [socket, setSocket] = useState();
     const [socketConnected, setSocketConnected] = useState(false);
     const [message, setMessage] = useState({});
@@ -54,7 +56,10 @@ function App() {
 
     useEffect(() => {
         if (socket) {
-            socket.on("new message", (message) => setMessage(message));
+            socket.on("new message", (message) => {
+                setMessage(message);
+                addMessage(message);
+            });
         }
 
         return () => {
@@ -76,4 +81,16 @@ function App() {
     );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        messages: state.chat.messages,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addMessage: (message) => dispatch(addMessage(message)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
