@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 
-import messagesReducer from "./messages/reducer";
+import messagesReducer from "./reducers/messagesReducer";
 
 const rootReducer = combineReducers({
     chat: messagesReducer,
