@@ -1,10 +1,15 @@
-const INITIAL_STATE = {
+import { MessagesState, MessageAction } from "../store";
+
+const INITIAL_STATE: MessagesState = {
     messages: {
         misc: [],
     },
 };
 
-const reducer = (state = INITIAL_STATE, action) => {
+const reducer = (
+    state = INITIAL_STATE,
+    action: MessageAction
+): MessagesState => {
     switch (action.type) {
         case "ADD_MESSAGE":
             const message = action.message;
@@ -41,6 +46,8 @@ const reducer = (state = INITIAL_STATE, action) => {
         default:
             return state;
     }
+
+    return state;
 };
 
 export default reducer;

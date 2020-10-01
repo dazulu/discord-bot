@@ -1,7 +1,17 @@
 import React from "react";
 import { ReactComponent as Logo } from "../assets/forum.svg";
 
-const Header = ({ socketConnected, connect, disconnect }) => {
+interface HeaderProps {
+    socketConnected: boolean;
+    connect: () => void;
+    disconnect: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({
+    socketConnected,
+    connect,
+    disconnect,
+}) => {
     return (
         <header className="header">
             <h1 className="title">
@@ -21,7 +31,7 @@ const Header = ({ socketConnected, connect, disconnect }) => {
                     type="button"
                     value="Disconnect"
                     onClick={disconnect}
-                    disabled={!socketConnected}
+                    disabled={socketConnected}
                 />
             </div>
         </header>

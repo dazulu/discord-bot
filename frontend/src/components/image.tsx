@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { constrainDimensions } from "../lib/images";
+import { AttachmentProps } from "../redux/store";
 
-const Image = ({ url, width, height }) => {
+const Image: React.FC<AttachmentProps> = ({ url, width, height }) => {
     const [collapsed, setCollapsed] = useState(false);
 
-    const handleClick = (e) => {
+    const handleClick = (e: React.MouseEvent<HTMLSpanElement>) => {
         /*
          *  Don't want URL to open on click
          *  but allow right click for image context menu
@@ -23,7 +24,7 @@ const Image = ({ url, width, height }) => {
     return (
         <>
             {collapsed ? (
-                <span class="item--collapsed" onClick={handleClick}>
+                <span className="item--collapsed" onClick={handleClick}>
                     Show Image
                 </span>
             ) : (

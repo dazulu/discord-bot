@@ -56,7 +56,7 @@ export const getAttachments = (attachments, type) => {
 };
 
 export const createMessagePayload = (msgObject) => {
-    console.log(msgObject);
+    // console.log(msgObject);
     const {
         attachments,
         channel: { type, name },

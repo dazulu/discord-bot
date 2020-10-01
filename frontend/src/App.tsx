@@ -4,21 +4,22 @@ import Chats from "./components/chats";
 import Header from "./components/header";
 import io from "socket.io-client";
 import { useDispatch } from "react-redux";
+import { MessageAction } from "./redux/store";
 
 function App() {
     const dispatch = useDispatch();
-    const [socket, setSocket] = useState();
+    const [socket, setSocket] = useState<SocketIOClient.Socket>();
     const [socketConnected, setSocketConnected] = useState(false);
 
     const connect = () => {
-        if (!socketConnected) {
+        if (socket && !socketConnected) {
             socket.connect();
             setSocketConnected(true);
         }
     };
 
     const disconnect = () => {
-        if (socketConnected) {
+        if (socket && socketConnected) {
             socket.disconnect();
             setSocketConnected(false);
         }
@@ -26,7 +27,6 @@ function App() {
 
     // establish socket connection
     useEffect(() => {
-        console.log("c:", "establish socket connection");
         setSocket(io("http://localhost:4000"));
     }, []);
 
@@ -34,17 +34,17 @@ function App() {
     useEffect(() => {
         if (!socket) {
             return;
+        } else {
+            socket.on("connect", () => {
+                console.log("connect");
+                setSocketConnected(socket.connected);
+                socket.emit("subscribeToMessageEvent");
+            });
+            socket.on("disconnect", () => {
+                console.log("disconnect");
+                setSocketConnected(socket.connected);
+            });
         }
-
-        socket.on("connect", () => {
-            console.log("c:", "connect");
-            setSocketConnected(socket.connected);
-            socket.emit("subscribeToMessageEvent");
-        });
-        socket.on("disconnect", () => {
-            console.log("c:", "disconnect");
-            setSocketConnected(socket.connected);
-        });
 
         return () => {
             if (socket) {
@@ -56,8 +56,8 @@ function App() {
 
     useEffect(() => {
         if (socket) {
-            socket.on("new message", (message) => {
-                dispatch({ type: "ADD_MESSAGE", message });
+            socket.on("new message", (message: any) => {
+                dispatch<MessageAction>({ type: "ADD_MESSAGE", message });
             });
         }
 
