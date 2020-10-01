@@ -1,4 +1,8 @@
-export const constrainDimensions = (width, height, constraint) => {
+export const constrainDimensions = (
+    width: number,
+    height: number,
+    constraint: number
+): { constrainedWidth: number; constrainedHeight: number } => {
     let constrainedWidth, constrainedHeight;
 
     if (width > height) {

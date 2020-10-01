@@ -1,8 +1,14 @@
 import React, { useEffect, useRef } from "react";
+import { MessageProps } from "../redux/store";
 import Message from "./message";
 
-const Chat = ({ name, messages = [] }) => {
-    const chatEl = useRef(null);
+interface ChatProps {
+    name: string;
+    messages: MessageProps[];
+}
+
+const Chat: React.FC<ChatProps> = ({ name, messages = [] }) => {
+    const chatEl = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setTimeout(() => {

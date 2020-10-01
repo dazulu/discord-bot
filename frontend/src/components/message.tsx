@@ -1,8 +1,16 @@
 import React from "react";
 import Image from "./image";
 import Video from "./video";
+import { MessageProps } from "../redux/store";
 
-const Chat = ({ username, discriminator, source, videos, images, content }) => {
+const Chat: React.FC<MessageProps> = ({
+    username,
+    discriminator,
+    source,
+    videos,
+    images,
+    content,
+}) => {
     return (
         <div>
             <span className="source">[{source}]</span>
@@ -16,8 +24,10 @@ const Chat = ({ username, discriminator, source, videos, images, content }) => {
                     }}
                 />
             )}
-            {images && images.map((image, i) => <Image {...image} key={i} />)}
-            {videos && videos.map((video, i) => <Video {...video} key={i} />)}
+            {images &&
+                images.map((image, index) => <Image {...image} key={index} />)}
+            {videos &&
+                videos.map((video, index) => <Video {...video} key={index} />)}
         </div>
     );
 };
