@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
-import useMeasure from "../hooks/useHeight";
+import useMeasure from "../hooks/useMeasure";
 import "../styles/resize.css";
 
 const Resizeme = () => {
