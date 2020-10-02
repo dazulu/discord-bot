@@ -31,7 +31,7 @@ const Header: React.FC<HeaderProps> = ({
                     type="button"
                     value="Disconnect"
                     onClick={disconnect}
-                    disabled={socketConnected}
+                    disabled={!socketConnected}
                 />
             </div>
         </header>
