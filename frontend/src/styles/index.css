@@ -104,8 +104,9 @@ code {
 }
 
 .message-attachment {
+    border-radius: 7px;
     display: block;
-    padding: 4px 0;
+    margin: 4px 0;
 }
 
 .item--collapsed {
