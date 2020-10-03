@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-
-import Chats from "./components/chats";
-import Header from "./components/header";
 import io from "socket.io-client";
 import { useDispatch } from "react-redux";
-import { MessageAction } from "./redux/store";
+
+import Header from "./components/header";
+import Chats from "./components/chats";
+import LocalStorage from "./components/localStorage";
+import { AddMessageAction, AddColourAction } from "./redux/store";
 
 function App() {
     const dispatch = useDispatch();
@@ -57,7 +58,11 @@ function App() {
     useEffect(() => {
         if (socket) {
             socket.on("new message", (message: any) => {
-                dispatch<MessageAction>({ type: "ADD_MESSAGE", message });
+                dispatch<AddMessageAction>({ type: "ADD_MESSAGE", message });
+                dispatch<AddColourAction>({
+                    type: "ADD_COLOUR",
+                    source: message.source,
+                });
             });
         }
 
@@ -70,6 +75,7 @@ function App() {
 
     return (
         <>
+            <LocalStorage />
             <Header
                 connect={connect}
                 disconnect={disconnect}
