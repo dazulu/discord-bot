@@ -1,7 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { MessageProps } from "../redux/store";
+import { RootState } from "../redux/store";
 import Image from "./image";
 import Video from "./video";
-import { MessageProps } from "../redux/store";
 
 const Chat: React.FC<MessageProps> = ({
     username,
@@ -11,9 +13,20 @@ const Chat: React.FC<MessageProps> = ({
     images,
     content,
 }) => {
+    const colours = useSelector((state: RootState) => state.colours);
+
+    let sourceColour = {};
+    if (colours[source]) {
+        sourceColour = {
+            color: colours[source],
+        };
+    }
+
     return (
         <div>
-            <span className="source">[{source}]</span>
+            <span className="source" style={sourceColour}>
+                [{source}]
+            </span>
             <span className="username">{username}</span>
             <span className="discriminator">#{discriminator}: </span>
             {content && (
