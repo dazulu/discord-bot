@@ -22,8 +22,8 @@ const Chat: React.FC<ChatProps> = ({ name, messages = [] }) => {
         <div className={`column ${name === "misc" ? "column-misc" : ""}`}>
             <h2 className="column-name">{name}</h2>
             <div className="chat" ref={chatEl}>
-                {messages.map((message) => (
-                    <Message key={name} {...message} />
+                {messages.map((message, i) => (
+                    <Message key={i} {...message} />
                 ))}
             </div>
         </div>
