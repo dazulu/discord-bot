@@ -1,4 +1,4 @@
-import { MessagesState, MessageAction } from "../store";
+import { MessagesState, AddMessageAction } from "../store";
 
 const INITIAL_STATE: MessagesState = {
     messages: {
@@ -8,7 +8,7 @@ const INITIAL_STATE: MessagesState = {
 
 const reducer = (
     state = INITIAL_STATE,
-    action: MessageAction
+    action: AddMessageAction
 ): MessagesState => {
     switch (action.type) {
         case "ADD_MESSAGE":

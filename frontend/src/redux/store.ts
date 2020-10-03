@@ -25,9 +25,25 @@ export interface MessagesState {
     };
 }
 
-export interface MessageAction {
+export interface AddMessageAction {
     type: "ADD_MESSAGE";
     message: MessageProps;
+}
+
+export interface ColoursState {
+    [key: string]: string;
+}
+
+export interface AddColourAction {
+    type: "ADD_COLOUR";
+    source: "string";
+}
+
+export interface LoadColoursAction {
+    type: "LOAD_COLOURS";
+    colours: {
+        [key: string]: string;
+    };
 }
 
 export type RootState = ReturnType<typeof rootReducer>;
